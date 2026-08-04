@@ -1,0 +1,154 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: transparent;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- layout: chat on top, stage pinned to bottom ---------- */
+body { display: flex; flex-direction: column; justify-content: flex-end; }
+
+#stage {
+  position: relative;
+  height: 252px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-bottom: 6px;
+}
+
+#pet { width: 200px; height: 190px; cursor: grab; }
+
+/* ---------- status pill (screenshot vibes) ---------- */
+#pill {
+  max-width: 316px;
+  min-width: 170px;
+  background: rgba(24, 24, 28, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 9px 16px 10px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+#pillTitle {
+  color: #fff; font-size: 13.5px; font-weight: 650;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#pillSub {
+  color: rgba(235, 235, 240, 0.55); font-size: 12.5px; margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#pillSub:empty { display: none; }
+
+/* ---------- chat panel ---------- */
+#chat {
+  margin: 8px 8px 0;
+  height: 356px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(21, 21, 26, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+#chatHeader {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+#chatTitle { color: #f0eee6; font-weight: 700; font-size: 13px; letter-spacing: 0.2px; }
+.spacer { flex: 1; }
+#chatHeader button {
+  background: none; border: none; color: rgba(255, 255, 255, 0.45);
+  font-size: 15px; cursor: pointer; padding: 2px 6px; border-radius: 6px;
+}
+#chatHeader button:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+#transcript {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+#transcript::-webkit-scrollbar { width: 6px; }
+#transcript::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 3px; }
+
+.bubble {
+  max-width: 86%;
+  padding: 8px 11px;
+  border-radius: 13px;
+  font-size: 13px;
+  line-height: 1.42;
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.bubble.user {
+  align-self: flex-end;
+  background: #d97757;
+  color: #fff;
+  border-bottom-right-radius: 5px;
+}
+.bubble.assistant {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.07);
+  color: #ececf1;
+  border-bottom-left-radius: 5px;
+}
+.bubble.assistant.streaming::after { content: "▌"; opacity: 0.6; }
+.bubble.error { align-self: flex-start; background: rgba(190, 60, 50, 0.25); color: #ffb4a8; }
+.note {
+  align-self: center; color: rgba(255, 255, 255, 0.35); font-size: 11.5px;
+}
+.toolrow {
+  align-self: flex-start;
+  color: rgba(235, 235, 240, 0.5);
+  font-size: 11.5px;
+  font-family: "SF Mono", ui-monospace, Menlo, monospace;
+  padding: 1px 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%;
+}
+
+#composer {
+  display: flex; align-items: flex-end; gap: 6px;
+  padding: 8px 10px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+#input {
+  flex: 1;
+  resize: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 11px;
+  color: #f2f2f5;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 8px 10px;
+  max-height: 96px;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+#input:focus { border-color: rgba(217, 119, 87, 0.55); }
+#composer button {
+  border: none; border-radius: 10px;
+  width: 34px; height: 34px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #fff;
+}
+#btnSend { background: #d97757; }
+#btnSend:hover { background: #e08663; }
+#btnStop { background: rgba(255, 255, 255, 0.14); }
+#btnStop:hover { background: rgba(255, 80, 60, 0.5); }
