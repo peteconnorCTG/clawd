@@ -49,6 +49,36 @@ First packaged launch registers Clawd as a **login item** (System Settings →
 General → Login Items; remove it there to opt out). No dock icon by design —
 quit via right-click → Quit Clawd, or `pkill -f Clawd.app`.
 
+## Sharing with coworkers
+
+Clawd carries **no credentials** — it resolves whoever-is-running-it's Claude
+auth at launch. So sharing = share the code, and each person brings their own
+auth:
+
+1. **They have Claude Code installed & logged in** → Clawd just works.
+2. **Or** they export `ANTHROPIC_API_KEY` (org console key) in their shell /
+   launchd env — the SDK prefers it over OAuth automatically.
+
+Recommended path — share the repo, everyone builds locally:
+
+```bash
+git clone <repo-url> clawd && cd clawd
+npm install          # needs Node 18+
+npm run smoke:agent  # verifies their auth in 30s
+npm run package && cp -R dist/Clawd-darwin-arm64/Clawd.app /Applications/
+open /Applications/Clawd.app
+```
+
+Why not just AirDrop the .app? It's unsigned — a *downloaded* copy gets
+quarantined and Gatekeeper refuses it (locally built copies are fine). Fixing
+that properly means an Apple Developer ID + notarization (plus re-signing the
+SDK's bundled `claude` binary). Intel Macs: build with `--arch=x64` in the
+package script.
+
+Per Anthropic's Agent SDK terms, don't distribute a product on claude.ai
+subscription login — internal colleagues using their own logins/keys on their
+own machines is the pattern above; anything bigger should be API-key auth.
+
 ## Troubleshooting
 
 - **"Operation not permitted" on Desktop/Documents/Downloads** — macOS folder
