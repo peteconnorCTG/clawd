@@ -296,10 +296,36 @@ ipcMain.on("ui:dragEnd", () => {
   dragging = null;
 });
 
+// idle wander: ease the window horizontally by dx over ~1.2s
+let wanderTimer = null;
+ipcMain.on("ui:wander", (_e, dx) => {
+  if (!win || dragging || wanderTimer || typeof dx !== "number") return;
+  const [sx, sy] = win.getPosition();
+  const wa = screen.getDisplayMatching(win.getBounds()).workArea;
+  const target = Math.min(Math.max(sx + dx, wa.x), wa.x + wa.width - W);
+  const t0 = Date.now(), dur = 1200;
+  wanderTimer = setInterval(() => {
+    if (!win || dragging) {
+      clearInterval(wanderTimer);
+      wanderTimer = null;
+      return;
+    }
+    const p = Math.min((Date.now() - t0) / dur, 1);
+    const ease = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+    win.setPosition(Math.round(sx + (target - sx) * ease), sy, false);
+    if (p >= 1) {
+      clearInterval(wanderTimer);
+      wanderTimer = null;
+      ui({ type: "wanderDone" });
+    }
+  }, 16);
+});
+
 ipcMain.on("ui:contextMenu", () => {
   if (!win) return;
   Menu.buildFromTemplate([
     { label: "Open / Close Chat", click: () => win.webContents.send("ui:toggleChat") },
+    { label: "Sounds On / Off", click: () => win.webContents.send("ui:toggleMute") },
     {
       label: "New Conversation",
       click: () => {
