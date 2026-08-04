@@ -17,7 +17,7 @@ to third parties. Don't distribute.
 |---|---|
 | Open/close chat | Click the pet (or the status pill), or ⌥⇧C |
 | Move the pet | Drag it |
-| Menu (New Conversation / Quit) | Right-click the pet |
+| Menu (Sounds on/off · New Conversation / Quit) | Right-click the pet |
 | Send | Enter (Shift+Enter = newline) |
 | Stop a running task | ■ button while busy |
 
