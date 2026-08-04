@@ -98,7 +98,7 @@ function finalizeStream(finalText) {
   streamBuf = "";
 }
 function greet() {
-  addBubble("assistant", "Hey Pete 👋 I'm Clawd. Ask me to do things on this Mac — I'll actually do them.");
+  addBubble("assistant", "Hey! I'm Clawd 👋 Ask me to do things on this Mac — I'll actually do them.");
 }
 function setPill(title, sub) {
   clearTimeout(pillHideTimer);
@@ -520,6 +520,6 @@ function loop(tMs) {
 }
 
 greet();
-setPill("Hey Pete 👋", "click me to chat");
+setPill("Hey! 👋", "click me to chat");
 fadePill(6000);
 requestAnimationFrame(loop);
